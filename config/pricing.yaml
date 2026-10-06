@@ -1,0 +1,5 @@
+# USD / 1M token — cập nhật theo bảng giá OpenAI hiện hành
+gpt-5.4-nano:           { input: 0.0, output: 0.0 }
+gpt-5.4-mini:           { input: 0.0, output: 0.0 }
+gpt-5.4:                { input: 0.0, output: 0.0 }
+text-embedding-3-small: { input: 0.0 }

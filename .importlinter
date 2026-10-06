@@ -1,0 +1,44 @@
+[importlinter]
+root_packages =
+    shared
+    gateway
+    ai_service
+include_external_packages = True
+
+[importlinter:contract:services-independent]
+name = gateway và ai_service không import lẫn nhau
+type = independence
+modules =
+    gateway
+    ai_service
+include_external_packages = True
+
+[importlinter:contract:shared-is-leaf]
+name = shared không import app nào
+type = forbidden
+source_modules = shared
+forbidden_modules =
+    gateway
+    ai_service
+include_external_packages = True
+
+[importlinter:contract:nodes-pure]
+name = agent không biết Redis / worker
+type = forbidden
+source_modules = ai_service.agent
+forbidden_modules =
+    ai_service.worker
+    redis
+
+[importlinter:contract:llm-single-entry]
+name = chỉ ai_service.llm được import langchain_openai
+type = forbidden
+source_modules =
+    ai_service.agent
+    ai_service.rag
+    ai_service.compliance
+    ai_service.skills
+    ai_service.worker
+forbidden_modules = langchain_openai
+# agent → llm.client → langchain_openai là đường đi hợp lệ; chỉ cấm import trực tiếp
+allow_indirect_imports = True

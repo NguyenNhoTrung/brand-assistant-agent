@@ -1,0 +1,55 @@
+[project]
+name = "company-brain"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+
+[tool.uv.workspace]
+members = ["packages/shared", "apps/gateway", "apps/ai-service"]
+
+[tool.uv.sources]
+shared = { workspace = true }
+gateway = { workspace = true }
+ai-service = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "ruff>=0.13",
+    "mypy>=1.18",
+    "pytest>=8.4",
+    "pytest-asyncio>=1.2",
+    "pytest-cov>=7.0",
+    "fakeredis[lua]>=2.31",
+    "httpx>=0.28",
+    "import-linter>=2.5",
+    "pre-commit>=4.3",
+    "types-PyYAML",
+    "types-cachetools",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ASYNC", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003", "RUF012"]  # chữ tiếng Việt; field mặc định của pydantic
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Header", "fastapi.Query"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["shared", "gateway", "ai_service"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+check_untyped_defs = true
+explicit_package_bases = true
+mypy_path = ["packages/shared/src", "apps/gateway/src", "apps/ai-service/src"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = ["llm: cần OpenAI thật (bỏ qua trong CI)"]
+testpaths = ["packages/shared/tests", "apps/gateway/tests", "apps/ai-service/tests"]
+addopts = "--import-mode=importlib"

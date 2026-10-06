@@ -1,0 +1,21 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.13.3
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: import-linter
+        name: import-linter
+        entry: uv run lint-imports
+        language: system
+        pass_filenames: false
+        types: [python]
+      - id: types-in-sync
+        name: types.gen.ts khớp với contracts
+        entry: bash -c 'make gen-types && git diff --exit-code apps/web/lib/types.gen.ts'
+        language: system
+        pass_filenames: false
+        files: ^packages/shared/src/shared/contracts/

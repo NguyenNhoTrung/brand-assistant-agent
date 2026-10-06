@@ -1,0 +1,85 @@
+name: company-brain
+
+x-app-env: &app-env
+  ENV: local
+  REDIS_URL: redis://redis:6379/0
+  QDRANT_URL: http://qdrant:6333
+  QDRANT_API_KEY: ${QDRANT_API_KEY:-change-me-qdrant}
+  QDRANT_COLLECTION: kb_chunks
+  TRACE_PAYLOADS: ${TRACE_PAYLOADS:-true}
+
+services:
+  redis:
+    image: redis:8
+    command: ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec",
+              "--save", "300", "10", "--maxmemory", "1gb", "--maxmemory-policy", "noeviction"]
+    volumes: [redis_data:/data]
+    ports: ["127.0.0.1:6379:6379"]
+    healthcheck: { test: ["CMD", "redis-cli", "ping"], interval: 5s, retries: 20 }
+
+  qdrant:
+    image: qdrant/qdrant:v1.17.0
+    environment:
+      QDRANT__SERVICE__API_KEY: ${QDRANT_API_KEY:-change-me-qdrant}
+      QDRANT__TELEMETRY_DISABLED: "true"
+    volumes: [qdrant_data:/qdrant/storage]
+    ports: ["127.0.0.1:6333:6333"]
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c ':> /dev/tcp/127.0.0.1/6333' || exit 1"]
+      interval: 5s
+      retries: 20
+
+  ingest:
+    build: { context: ., dockerfile: apps/ai-service/Dockerfile }
+    command: ["python", "-m", "ai_service.rag.ingest", "--path", "/data/knowledge"]
+    environment:
+      <<: *app-env
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?Thiếu OPENAI_API_KEY trong .env}
+    volumes: ["./data:/data:ro", "./config:/app/config:ro"]
+    depends_on:
+      redis: { condition: service_healthy }
+      qdrant: { condition: service_healthy }
+    restart: "no"
+
+  gateway:
+    build: { context: ., dockerfile: apps/gateway/Dockerfile }
+    environment:
+      <<: *app-env
+      CORS_ORIGINS: '["http://localhost:3000"]'
+      USERS_FILE: /data/users.yaml
+      DEMO_ADMIN_PASSWORD: ${DEMO_ADMIN_PASSWORD:-admin-demo-2026}
+      DEMO_MEMBER_PASSWORD: ${DEMO_MEMBER_PASSWORD:-marketer-demo-2026}
+    volumes: ["./data:/data:ro"]
+    ports: ["127.0.0.1:8080:8080"]
+    depends_on:
+      redis: { condition: service_healthy }
+      qdrant: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8080/readyz')"]
+      interval: 5s
+      retries: 30
+
+  ai-worker:
+    build: { context: ., dockerfile: apps/ai-service/Dockerfile }
+    environment:
+      <<: *app-env
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?Thiếu OPENAI_API_KEY trong .env}
+      WORKER_CONCURRENCY: "4"
+    volumes: ["./data:/data:ro", "./config:/app/config:ro"]
+    deploy: { replicas: 2 }
+    stop_grace_period: 30s
+    depends_on:
+      ingest: { condition: service_completed_successfully }
+
+  web:
+    build:
+      context: apps/web
+      args:
+        NEXT_PUBLIC_GATEWAY_URL: http://localhost:8080
+    ports: ["127.0.0.1:3000:3000"]
+    depends_on:
+      gateway: { condition: service_healthy }
+
+volumes:
+  redis_data: {}
+  qdrant_data: {}

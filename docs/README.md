@@ -1,0 +1,3 @@
+- Kiến trúc chi tiết: [`../ARCHITECTURE_DEMO.md`](../ARCHITECTURE_DEMO.md) (bản đầy đủ: [`../ARCHITECTURE.md`](../ARCHITECTURE.md))
+- Đề bài: [`../REQUIREMENTS.md`](../REQUIREMENTS.md)
+- ADR 001–015: bảng §24 trong ARCHITECTURE_DEMO.md (ADR 015 đã bị thay bởi `adr/0017-no-fake-llm.md`) · ADR mới: `adr/NNNN-*.md` (mẫu `adr/0000-template.md`)
