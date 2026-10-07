@@ -1,6 +1,6 @@
 # ADR-0017: Không có chế độ fake LLM — luôn dùng OpenAI thật
 
-- Trạng thái: accepted (thay thế ADR 015 trong ARCHITECTURE_DEMO.md §24 và §13.5)
+- Trạng thái: accepted (thay thế phương án `LLM_MODE=fake` trong thiết kế ban đầu)
 - Ngày: 2026-10-06
 
 ## Bối cảnh

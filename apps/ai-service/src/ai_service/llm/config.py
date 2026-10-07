@@ -12,6 +12,7 @@ class ModelConfig(BaseModel):
     timeout: float = 60
     max_tokens: int | None = None
     fallback: ModelAlias | None = None
+    dims: int | None = None  # chỉ với alias embed
 
 
 @cache

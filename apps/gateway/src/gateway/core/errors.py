@@ -1,8 +1,11 @@
+import structlog
 from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from shared.contracts import ErrorCode, ProblemDetail
+
+log = structlog.get_logger()
 
 _TITLES = {
     400: "Bad request",
@@ -11,6 +14,7 @@ _TITLES = {
     404: "Not found",
     422: "Validation error",
     500: "Internal error",
+    503: "Service unavailable",
 }
 
 
@@ -44,3 +48,9 @@ async def problem_handler(request: Request, exc: Exception) -> JSONResponse:
 async def validation_handler(request: Request, exc: Exception) -> JSONResponse:
     assert isinstance(exc, RequestValidationError)
     return _response(request, 422, "validation_error", str(exc.errors()[:3]))
+
+
+async def unhandled_handler(request: Request, exc: Exception) -> JSONResponse:
+    """Lỗi không lường trước → vẫn trả problem+json có request_id (không lộ stacktrace)."""
+    log.exception("http.unhandled", error=type(exc).__name__)
+    return _response(request, 500, "internal_error", None)

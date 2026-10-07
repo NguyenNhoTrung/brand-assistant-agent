@@ -1,8 +1,8 @@
-// Header Basic lưu trong sessionStorage (mất khi đóng tab) — ARCHITECTURE_DEMO.md §15.3
+// Header Basic lưu trong sessionStorage (mất khi đóng tab)
 const KEY = "cb.auth";
 
 export function saveAuth(email: string, password: string): string {
-  const header = "Basic " + btoa(`${email}:${password}`);
+  const header = "Basic " + btoa(String.fromCharCode(...new TextEncoder().encode(`${email}:${password}`)));
   sessionStorage.setItem(KEY, header);
   return header;
 }
@@ -16,5 +16,9 @@ export function getAuth(): string | null {
 }
 
 export function clearAuth(): void {
-  sessionStorage.removeItem(KEY);
+  try {
+    sessionStorage.removeItem(KEY);
+  } catch {
+    // sessionStorage bị chặn → không có gì để xóa
+  }
 }

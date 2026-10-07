@@ -1,0 +1,13 @@
+# Ngưỡng §19.3 — run_eval thoát với exit code 1 nếu metric nào không đạt.
+# min: metric phải >= giá trị · max: metric phải <= giá trị. Metric không có case nào (None) → bỏ qua.
+recall_at_5:            { min: 0.90 }
+citation_validity:      { min: 1.00 }
+expected_facts:         { min: 0.85 }
+abstain_precision:      { min: 0.90 }
+abstain_recall:         { min: 0.90 }
+forbidden_facts_rate:   { max: 0.0 }   # tỉ lệ case khẳng định fact sai / bị cấm
+compliance_violations:  { max: 0 }     # số case có forbidden_patterns trong field publishable
+rule_ref_recall:        { min: 0.85 }
+artifact_rubric:        { min: 4.0 }
+latency_p95_qa_s:       { max: 12 }
+latency_p95_artifact_s: { max: 40 }

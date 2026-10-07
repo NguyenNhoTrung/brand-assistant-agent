@@ -3,6 +3,7 @@ import os
 from dataclasses import dataclass
 from typing import Literal
 
+import structlog
 import yaml
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
@@ -12,6 +13,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 from gateway.core.errors import Problem
 
+log = structlog.get_logger()
 _ph = PasswordHasher()
 security = HTTPBasic(auto_error=False)
 
@@ -42,11 +44,15 @@ class UserStore:
             raw = yaml.safe_load(f)["users"]
         records = {}
         for u in raw:
-            password = os.environ.get(u["password_env"])
+            password = os.environ.get(u["password_env"], "").strip()
             if not password:
-                continue  # thiếu mật khẩu → user không đăng nhập được
+                log.warning("auth.user_disabled", email=u["email"], reason=f"thiếu biến môi trường {u['password_env']}")
+                continue
             user = User(id=u["id"], email=u["email"], role=u["role"])
             records[user.email] = _Record(user, _ph.hash(password))
+        if not records:
+            envs = ", ".join(u["password_env"] for u in raw)
+            raise RuntimeError(f"Không user nào đăng nhập được — đặt {envs} trong .env ({path})")
         return cls(records)
 
     def verify(self, email: str, password: str) -> User | None:
@@ -71,6 +77,7 @@ async def current_user(request: Request, creds: HTTPBasicCredentials | None = De
     user = store.verify(creds.username, creds.password)
     if user is None:
         raise Problem(401, "auth_invalid")
+    structlog.contextvars.bind_contextvars(user_id=user.id)
     return user
 
 

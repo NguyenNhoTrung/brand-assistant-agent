@@ -1,4 +1,5 @@
 import base64
+from types import SimpleNamespace
 
 import fakeredis
 import pytest
@@ -13,15 +14,43 @@ def redis():
     return fakeredis.FakeAsyncRedis()
 
 
+class FakeQdrant:
+    """Thay AsyncQdrantClient: `points` = {point_id: payload}; `down=True` → mọi lời gọi lỗi."""
+
+    def __init__(self) -> None:
+        self.points: dict[str, dict] = {}
+        self.down = False
+
+    def _check(self) -> None:
+        if self.down:
+            raise ConnectionError("qdrant down")
+
+    async def retrieve(self, collection_name, ids, **_):
+        self._check()
+        return [SimpleNamespace(id=i, payload=self.points[i]) for i in ids if i in self.points]
+
+    async def get_collections(self):
+        self._check()
+        return SimpleNamespace(collections=[])
+
+    async def close(self) -> None:
+        pass
+
+
 @pytest.fixture
-def client(redis):
+def qdrant() -> FakeQdrant:
+    return FakeQdrant()
+
+
+@pytest.fixture
+def client(redis, qdrant):
     users = UserStore(
         {
             "m@x.test": _Record(User("u_m", "m@x.test", "member"), _ph.hash("pw-member")),
             "a@x.test": _Record(User("u_a", "a@x.test", "admin"), _ph.hash("pw-admin")),
         }
     )
-    with TestClient(create_app(redis=redis, users=users)) as c:
+    with TestClient(create_app(redis=redis, users=users, qdrant=qdrant)) as c:
         yield c
 
 

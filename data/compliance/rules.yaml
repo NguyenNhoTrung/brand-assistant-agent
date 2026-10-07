@@ -1,2 +1,39 @@
-# TODO(P0): rule compliance theo ARCHITECTURE_DEMO.md §11 (CMP-001..., BRD-001...)
-rules: []
+# Rule compliance & brand.
+# Bản cho người đọc: data/knowledge/compliance/ad-claims-policy.md (giữ đồng bộ khi sửa).
+version: 2026-09-01
+rules:
+  - id: CMP-001
+    title: No medical or drug claims
+    severity: block
+    description: Cosmetics must not claim to cure, treat, heal or prevent disease (acne, eczema, rosacea).
+    patterns: ['\bcures?\b', '\bheals?\b', '\btreats?\s+(acne|eczema|rosacea)\b', '\beliminates?\s+acne\b']
+    compliant_alternative: "helps reduce the look of blemishes"
+  - id: CMP-002
+    title: Clinical claims need substantiation
+    severity: block
+    description: Use "clinically proven/tested" only with a study listed in the product sheet.
+    patterns: ['\bclinically\s+(proven|tested)\b']
+    requires_evidence: product.clinical_studies
+  - id: CMP-003
+    title: Testimonials need disclaimer
+    severity: block
+    applies_to: [testimonial, before_after]
+    required_phrase: "Results may vary."
+  - id: CMP-004
+    title: No absolute superlatives or guarantees
+    severity: warn
+    patterns: ['\b(best|#1|number one)\s+(in the world|on the market)\b', '\bguaranteed?\b']
+  - id: CMP-005
+    title: SPF usage statement
+    severity: block
+    applies_to_products: [spf50-daily-fluid]
+    required_phrase: "Reapply every 2 hours and after swimming."
+  - id: CMP-006
+    title: Discount cap
+    severity: block
+    description: Promotions must not exceed 25% off without CMO approval.
+    max_discount_pct: 25
+  - id: BRD-001
+    title: No fear-based or shaming language
+    severity: warn
+    patterns: ['\bflaws?\b', '\bugly\b', '\bfix your (face|skin)\b']

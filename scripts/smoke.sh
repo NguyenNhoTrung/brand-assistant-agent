@@ -14,5 +14,6 @@ echo "job: $job_id"
 
 events=$(curl -fsSN --max-time 120 -u "$USER_EMAIL:$USER_PW" "$GW/v1/jobs/$job_id/events")
 echo "$events" | grep -q "event: message.completed" || { echo "$events"; echo "FAIL: không có message.completed" >&2; exit 1; }
-# TODO(P0): khi retrieval thật xong → assert có citation (hiện retrieve còn là stub)
+echo "$events" | grep "event: message.completed" -A1 | grep -q '"chunk_id"' || { echo "FAIL: câu trả lời không có citation" >&2; exit 1; }
+curl -fsS -u "$USER_EMAIL:$USER_PW" "$GW/v1/conversations" | grep -q '"id"' || { echo "FAIL: /v1/conversations rỗng" >&2; exit 1; }
 echo "smoke OK"

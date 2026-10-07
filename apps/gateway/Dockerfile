@@ -9,4 +9,5 @@ RUN uv sync --frozen --no-dev --package gateway
 ENV PATH="/app/.venv/bin:$PATH" PYTHONUNBUFFERED=1
 USER 1000:1000
 EXPOSE 8080
-CMD ["uvicorn", "gateway.main:app", "--host", "0.0.0.0", "--port", "8080"]
+# --no-access-log: middleware đã log mỗi request dạng JSON (request_id, user_id, job_id)
+CMD ["uvicorn", "gateway.main:app", "--host", "0.0.0.0", "--port", "8080", "--no-access-log"]

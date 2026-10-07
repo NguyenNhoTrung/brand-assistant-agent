@@ -53,11 +53,13 @@ async def create_job(
 
 @router.get("/{job_id}")
 async def get_job(job_id: UUID, user: User = Depends(current_user), redis: Redis = Depends(get_redis)) -> JobView:
-    return await jobs.get_owned(redis, job_id, user.id)
+    """Trạng thái job; job chat `succeeded` kèm `result` (fallback polling khi không dùng SSE)."""
+    return await jobs.with_result(redis, await jobs.get_owned(redis, job_id, user.id))
 
 
 @router.post("/{job_id}/cancel", status_code=202)
 async def cancel_job(job_id: UUID, user: User = Depends(current_user), redis: Redis = Depends(get_redis)) -> dict:
-    await jobs.get_owned(redis, job_id, user.id)
-    await redis.set(keys.job_cancel(job_id), 1, ex=keys.TTL_1H)
+    job = await jobs.get_owned(redis, job_id, user.id)
+    if not job.is_terminal:  # job đã kết thúc → hủy là no-op
+        await redis.set(keys.job_cancel(job_id), 1, ex=keys.TTL_1H)
     return {"ok": True}

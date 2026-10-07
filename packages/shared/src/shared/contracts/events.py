@@ -12,6 +12,7 @@ EventType = Literal[
     "verification.result",
     "answer.revised",
     "artifact.ready",
+    "ingest.progress",
     "message.completed",
     "job.failed",
     "job.cancelled",

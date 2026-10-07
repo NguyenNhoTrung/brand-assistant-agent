@@ -8,6 +8,9 @@ class Settings(BaseAppSettings):
     models_file: str = "config/models.yaml"
     worker_concurrency: int = 4
     job_timeout_s: int = 180
+    shutdown_grace_s: int = 25  # SIGTERM → chờ job đang chạy rồi cắt; < stop_grace_period 30s của compose
+    checkpoint_ttl_min: int = 43_200  # AsyncRedisSaver tính TTL theo PHÚT — 30 ngày như conversation
+    kb_dir: str = "data/knowledge"  # job `ingest` đọc từ đây (tương đối với thư mục chạy)
     trace_payloads: bool = True
 
     def require_openai_key(self) -> SecretStr:

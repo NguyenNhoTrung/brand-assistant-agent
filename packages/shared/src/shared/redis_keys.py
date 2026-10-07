@@ -1,4 +1,4 @@
-"""MỘT nơi định nghĩa mọi key Redis (ARCHITECTURE_DEMO.md §5)."""
+"""MỘT nơi định nghĩa mọi key Redis."""
 
 from uuid import UUID
 
@@ -7,6 +7,7 @@ Id = str | UUID
 QUEUE = "queue:jobs"
 TRACES_RECENT = "traces:recent"
 KB_MANIFEST = "kb:manifest"
+KB_INGEST_LOCK = "kb:ingest:lock"  # chỉ một job ingest chạy tại một thời điểm
 
 TTL_1H = 3600
 TTL_1D = 86_400

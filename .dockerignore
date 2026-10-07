@@ -4,3 +4,4 @@
 **/.next
 .git
 .env
+.storage/

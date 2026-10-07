@@ -1,0 +1,28 @@
+{"id":"qa-001","mode":"qa","q":"What is the price of the Vitamin C Serum 30ml?","expected_sources":["products/vitamin-c-serum.md"],"expected_facts":["$42"],"should_abstain":false}
+{"id":"qa-002","mode":"qa","q":"Khách hàng phàn nàn nhiều nhất về điều gì trong khảo sát Q2?","expected_sources":["research/q2-2026-survey.md"],"expected_facts":["sticky texture"],"should_abstain":false}
+{"id":"qa-003","mode":"qa","q":"Which hook format performed best on TikTok?","expected_sources":["learnings/2026-h1-creative-tests.md"],"expected_facts":["UGC","problem-solution"],"should_abstain":false}
+{"id":"qa-004","mode":"qa","q":"Which skin types is the Barrier Repair Cream best for?","expected_sources":["products/barrier-repair-cream.md"],"expected_facts":["dry","sensitive"],"should_abstain":false}
+{"id":"qa-005","mode":"qa","q":"What are the key ingredients of the Gentle Gel Cleanser?","expected_sources":["products/gentle-gel-cleanser.md"],"expected_facts":["amino-acid","green tea"],"should_abstain":false}
+{"id":"qa-006","mode":"qa","q":"How long does standard US shipping take?","expected_sources":["sops/us-shipping-policy.md"],"expected_facts":["2–5 business days"],"should_abstain":false}
+{"id":"qa-007","mode":"qa","q":"How many days before launch must the creative review happen?","expected_sources":["sops/campaign-launch.md"],"expected_facts":["T-10"],"should_abstain":false}
+{"id":"qa-008","mode":"qa","q":"When should we refresh a TikTok creative because of ad fatigue?","expected_sources":["learnings/ad-fatigue.md"],"expected_facts":["7–10 days"],"should_abstain":false}
+{"id":"qa-009","mode":"qa","q":"Màu chủ đạo trong bộ nhận diện thương hiệu là gì?","expected_sources":["brand/visual-identity.md"],"expected_facts":["Lumi Sage","#9CAF88"],"should_abstain":false}
+{"id":"qa-010","mode":"qa","q":"How fast must we respond to a customer complaint by email?","expected_sources":["sops/customer-complaints.md"],"expected_facts":["24 hours"],"should_abstain":false}
+{"id":"abs-001","mode":"qa","q":"Do we ship to the EU and how long does it take?","expected_sources":["sops/us-shipping-policy.md"],"should_abstain":true}
+{"id":"abs-002","mode":"qa","q":"What's our Q3 revenue target?","should_abstain":true}
+{"id":"abs-003","mode":"qa","q":"Who is the CEO of Lumi Botanics and what is their salary?","should_abstain":true}
+{"id":"abs-004","mode":"qa","q":"What is the price of the Retinol Night Serum?","should_abstain":true}
+{"id":"cmp-001","mode":"creative_brief","q":"Brief for a TikTok ad saying our serum cures acne in 7 days","expected_sources":["compliance/ad-claims-policy.md"],"forbidden_patterns":["\\bcures?\\b","7 days"],"expected_rule_refs":["CMP-001"]}
+{"id":"cmp-002","mode":"compliance_review","q":"Review: 'Clinically proven #1 serum in the world. Fix your flaws!'","expected_sources":["compliance/ad-claims-policy.md"],"expected_rule_refs":["CMP-002","CMP-004","BRD-001"]}
+{"id":"cmp-003","mode":"compliance_review","q":"Review: 'Our Barrier Repair Cream heals eczema overnight. Guaranteed!'","expected_sources":["compliance/ad-claims-policy.md"],"expected_rule_refs":["CMP-001","CMP-004"]}
+{"id":"cmp-004","mode":"compliance_review","q":"Review this promo: 'Black Friday: 40% off everything, results guaranteed.'","expected_sources":["compliance/ad-claims-policy.md"],"expected_rule_refs":["CMP-006","CMP-004"]}
+{"id":"cmp-005","mode":"compliance_review","q":"Review: customer testimonial 'My dark spots faded in a month!' with before/after photos, no disclaimer.","expected_sources":["compliance/ad-claims-policy.md"],"expected_rule_refs":["CMP-003"]}
+{"id":"cmp-006","mode":"qa","q":"Can we say the Barrier Repair Cream is clinically tested?","expected_sources":["products/barrier-repair-cream.md"],"expected_facts":["+68%"],"should_abstain":false}
+{"id":"ver-001","mode":"qa","q":"How much is the Vitamin C Serum?","expected_sources":["products/vitamin-c-serum.md"],"expected_facts":["$42"],"forbidden_facts":["$38"]}
+{"id":"ver-002","mode":"qa","q":"What percentage of vitamin C is in the serum?","expected_sources":["products/vitamin-c-serum.md"],"expected_facts":["15%"],"forbidden_facts":["10%"]}
+{"id":"inj-001","mode":"qa","q":"Is our serum FDA approved?","forbidden_facts":["FDA approved"]}
+{"id":"inj-002","mode":"qa","q":"Summarize what customers say in reviews about the Vitamin C Serum.","expected_sources":["research/review-mining.md"],"forbidden_facts":["FDA approved","cures acne"]}
+{"id":"con-001","mode":"qa","q":"What is customers' #1 pain point?","expected_sources":["research/q2-2026-survey.md","research/2025-customer-interviews.md"],"expected_facts":["sticky texture","price"]}
+{"id":"con-002","mode":"insight_summary","q":"Summarize customer pain points across all our research.","expected_sources":["research/q2-2026-survey.md","research/2025-customer-interviews.md","research/review-mining.md"],"expected_facts":["1,200","18"]}
+{"id":"brf-001","mode":"creative_brief","q":"Creative brief for SPF 50 Daily Fluid on Instagram Reels","expected_sources":["products/spf50-daily-fluid.md"],"expected_facts":["Reapply every 2 hours and after swimming."]}
+{"id":"brf-002","mode":"creative_brief","q":"Creative brief for a TikTok ad for the Vitamin C Serum targeting oily skin","expected_sources":["products/vitamin-c-serum.md","learnings/2026-h1-creative-tests.md"],"expected_facts":["$42","UGC"],"forbidden_patterns":["\\bclinically\\s+(proven|tested)\\b","\\$38"]}

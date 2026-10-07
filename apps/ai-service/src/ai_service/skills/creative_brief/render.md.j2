@@ -1,0 +1,63 @@
+{% macro cite(c) %}{{ c.text }}{% for s in c.source_ids %} [{{ s }}]{% endfor %}{% endmacro %}
+# {{ a.title }}
+
+**Objective:** {{ cite(a.objective) }}
+
+**Target audience:** {{ cite(a.target_audience) }}
+
+**Key insight:** {{ cite(a.key_insight) }}
+
+**Single-minded proposition:** {{ a.single_minded_proposition }}
+
+## Reasons to believe
+{% for r in a.reasons_to_believe %}
+- {{ cite(r) }}
+{% endfor %}
+
+## Tone & voice
+{{ cite(a.tone_and_voice) }}
+
+## Mandatory inclusions
+{% for r in a.mandatory_inclusions %}
+- {{ cite(r) }}
+{% else %}
+- _None_
+{% endfor %}
+
+## Do not say
+{% for r in a.do_not_say %}
+- {{ cite(r) }}
+{% else %}
+- _None_
+{% endfor %}
+
+## Hooks to test
+{% for r in a.hooks_to_test %}
+{{ loop.index }}. {{ cite(r) }}
+{% endfor %}
+
+## Channels & formats
+{% for c in a.channels_and_formats %}
+- {{ c }}
+{% endfor %}
+
+## Success metrics
+{% for m in a.success_metrics %}
+- {{ m }}
+{% endfor %}
+{% if a.compliance_notes %}
+
+## Compliance notes
+{% for n in a.compliance_notes %}
+- **{{ n.rule_id }}** — "{{ n.requested_claim }}": {{ cite(n.explanation) }}
+  Compliant alternatives: {% for alt in n.compliant_alternatives %}"{{ alt }}"{% if not loop.last %} · {% endif %}{% endfor %}
+
+{% endfor %}
+{% endif %}
+{% if a.open_questions %}
+
+## Open questions
+{% for q in a.open_questions %}
+- {{ q }}
+{% endfor %}
+{% endif %}

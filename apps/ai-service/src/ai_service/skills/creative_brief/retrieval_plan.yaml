@@ -1,0 +1,8 @@
+# Query theo từng phần của brief — {product} {category} {channel} do plan_retrieval điền.
+sections:
+  product:   { query: "{product} key ingredients benefits price approved claims not allowed", doc_types: [product] }
+  audience:  { query: "{product} target customer pain points motivations",                 doc_types: [customer_research] }
+  voice:     { query: "brand voice tone do and don't",                                      doc_types: [brand_guideline] }
+  rules:     { query: "{category} advertising claims restrictions disclaimers",             doc_types: [compliance] }
+  learnings: { query: "{channel} creative hooks test results",                              doc_types: [creative_learning] }
+max_context_tokens: 6000

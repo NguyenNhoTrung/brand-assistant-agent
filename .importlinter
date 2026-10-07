@@ -4,6 +4,8 @@ root_packages =
     gateway
     ai_service
 include_external_packages = True
+# import trong `if TYPE_CHECKING:` chỉ phục vụ type hint, không chạy lúc runtime
+exclude_type_checking_imports = True
 
 [importlinter:contract:services-independent]
 name = gateway và ai_service không import lẫn nhau

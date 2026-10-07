@@ -1,7 +1,18 @@
+from shared.contracts.conversations import (
+    ConversationView,
+    Feedback,
+    IngestRequest,
+    KbEntry,
+    MessageView,
+    SourceView,
+)
 from shared.contracts.errors import ErrorCode, ProblemDetail
 from shared.contracts.events import EVENT_TYPES, TERMINAL_EVENTS, EventEnvelope, EventType
 from shared.contracts.jobs import (
+    AnswerStatus,
     Citation,
+    ComplianceIssue,
+    ComplianceSummary,
     FinalPayload,
     JobCreate,
     JobCreated,
@@ -15,17 +26,26 @@ from shared.contracts.jobs import (
 __all__ = [
     "EVENT_TYPES",
     "TERMINAL_EVENTS",
+    "AnswerStatus",
     "Citation",
+    "ComplianceIssue",
+    "ComplianceSummary",
+    "ConversationView",
     "ErrorCode",
     "EventEnvelope",
     "EventType",
+    "Feedback",
     "FinalPayload",
+    "IngestRequest",
     "JobCreate",
     "JobCreated",
     "JobInput",
     "JobStatus",
     "JobType",
     "JobView",
+    "KbEntry",
+    "MessageView",
     "Mode",
     "ProblemDetail",
+    "SourceView",
 ]

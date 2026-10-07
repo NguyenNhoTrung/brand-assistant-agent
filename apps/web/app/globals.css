@@ -1,9 +1,18 @@
-:root { --bg: #fafafa; --fg: #111; --muted: #666; --border: #ddd; --accent: #2f6f4f; }
-@media (prefers-color-scheme: dark) { :root { --bg: #111; --fg: #eee; --muted: #999; --border: #333; --accent: #6fbf8f; } }
-* { box-sizing: border-box; }
-body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--fg); }
-main { max-width: 760px; margin: 0 auto; padding: 24px 16px; }
-input, textarea, select, button { font: inherit; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: inherit; }
-button { background: var(--accent); color: #fff; border: none; cursor: pointer; }
-.muted { color: var(--muted); font-size: 0.9em; }
-.card { border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin: 12px 0; white-space: pre-wrap; }
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --color-brand-50: #eef7f1;
+  --color-brand-100: #d5ecdd;
+  --color-brand-500: #2f8a57;
+  --color-brand-600: #25744a;
+  --color-brand-700: #1d5c3b;
+}
+
+html {
+  color-scheme: light;
+}
+body {
+  @apply bg-stone-50 text-stone-900 antialiased;
+}

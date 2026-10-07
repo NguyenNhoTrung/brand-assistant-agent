@@ -14,6 +14,12 @@ MODELS: list[type[BaseModel]] = [
     contracts.FinalPayload,
     contracts.EventEnvelope,
     contracts.ProblemDetail,
+    contracts.ConversationView,
+    contracts.MessageView,
+    contracts.Feedback,
+    contracts.SourceView,
+    contracts.KbEntry,
+    contracts.IngestRequest,
 ]
 
 

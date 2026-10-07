@@ -1,17 +1,67 @@
+# ── Secrets ──────────────────────────────────────────────
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ── Dữ liệu runtime (Redis, Qdrant, cache model) ─────────
+.storage/
+.fastembed/
+*.rdb
+*.aof
+
+# ── Python ───────────────────────────────────────────────
 .venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*.egg-info/
+build/
+dist/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.import_linter_cache/
 .coverage
+.coverage.*
 coverage.xml
+htmlcov/
+
+# ── Node / Next.js ───────────────────────────────────────
 node_modules/
 .next/
 apps/web/out/
+*.tsbuildinfo
+.pnpm-store/
+npm-debug.log*
+pnpm-debug.log*
+
+# ── Test & eval output ───────────────────────────────────
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/e2e/out/
 evals/reports/*
 !evals/reports/.gitkeep
+!evals/reports/baseline.json
 contracts.schema.json
+
+# ── Log ──────────────────────────────────────────────────
+*.log
+compose.log
+
+# ── IDE / OS / công cụ cá nhân ───────────────────────────
+.idea/
+.vscode/
+*.swp
 .DS_Store
-*.tsbuildinfo
+Thumbs.db
+.claude/settings.local.json
+
+# ── Tài liệu nội bộ, không nộp ───────────────────────────
+# tin tuyển dụng (có mức thù lao) · lộ trình làm bài · bản thiết kế nháp · checklist test tay · script quay video
+REQUIREMENTS.md
+step.md
+ARCHITECTURE.md
+ARCHITECTURE_DEMO.md
+UI_TEST.md
+docs/07-loom-script.md

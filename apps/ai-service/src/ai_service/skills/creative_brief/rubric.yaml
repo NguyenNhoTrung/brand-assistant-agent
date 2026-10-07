@@ -1,0 +1,13 @@
+# Tiêu chí LLM-as-judge cho eval (Bước 9). Thang 1–5.
+criteria:
+  - id: grounded
+    description: Every factual statement is supported by the cited source; no invented facts.
+  - id: compliant
+    description: Publishable fields (proposition, hooks, alternatives) break no compliance rule; required phrases present.
+  - id: specific
+    description: Insight, proposition and hooks are specific to the product, audience and channel.
+  - id: on_brand
+    description: Tone matches the brand voice guideline.
+  - id: honest_gaps
+    description: Missing information is listed in open_questions instead of being guessed.
+pass_threshold: 4

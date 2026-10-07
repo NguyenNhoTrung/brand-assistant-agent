@@ -13,7 +13,7 @@ services:
     image: redis:8
     command: ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec",
               "--save", "300", "10", "--maxmemory", "1gb", "--maxmemory-policy", "noeviction"]
-    volumes: [redis_data:/data]
+    volumes: [./.storage/redis:/data]           # lưu cục bộ trong repo (gitignored)
     ports: ["127.0.0.1:6379:6379"]
     healthcheck: { test: ["CMD", "redis-cli", "ping"], interval: 5s, retries: 20 }
 
@@ -22,7 +22,7 @@ services:
     environment:
       QDRANT__SERVICE__API_KEY: ${QDRANT_API_KEY:-change-me-qdrant}
       QDRANT__TELEMETRY_DISABLED: "true"
-    volumes: [qdrant_data:/qdrant/storage]
+    volumes: [./.storage/qdrant:/qdrant/storage]  # lưu cục bộ trong repo (gitignored)
     ports: ["127.0.0.1:6333:6333"]
     healthcheck:
       test: ["CMD-SHELL", "bash -c ':> /dev/tcp/127.0.0.1/6333' || exit 1"]
@@ -45,7 +45,7 @@ services:
     build: { context: ., dockerfile: apps/gateway/Dockerfile }
     environment:
       <<: *app-env
-      CORS_ORIGINS: '["http://localhost:3000"]'
+      CORS_ORIGINS: '["http://localhost:3000","http://127.0.0.1:3000"]'
       USERS_FILE: /data/users.yaml
       DEMO_ADMIN_PASSWORD: ${DEMO_ADMIN_PASSWORD:-admin-demo-2026}
       DEMO_MEMBER_PASSWORD: ${DEMO_MEMBER_PASSWORD:-marketer-demo-2026}
@@ -65,8 +65,8 @@ services:
       <<: *app-env
       OPENAI_API_KEY: ${OPENAI_API_KEY:?Thiếu OPENAI_API_KEY trong .env}
       WORKER_CONCURRENCY: "4"
-    volumes: ["./data:/data:ro", "./config:/app/config:ro"]
-    deploy: { replicas: 2 }
+    # code đọc data/compliance/rules.yaml, data/knowledge (job ingest) tương đối với WORKDIR /app
+    volumes: ["./data:/app/data:ro", "./config:/app/config:ro"]
     stop_grace_period: 30s
     depends_on:
       ingest: { condition: service_completed_successfully }
@@ -80,6 +80,3 @@ services:
     depends_on:
       gateway: { condition: service_healthy }
 
-volumes:
-  redis_data: {}
-  qdrant_data: {}

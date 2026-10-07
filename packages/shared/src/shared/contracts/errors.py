@@ -9,6 +9,8 @@ ErrorCode = Literal[
     "validation_error",
     "job_not_found",
     "conversation_not_found",
+    "message_not_found",
+    "source_not_found",
     "job_timeout",
     "llm_unavailable",
     "internal_error",

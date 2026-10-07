@@ -49,7 +49,13 @@ mypy_path = ["packages/shared/src", "apps/gateway/src", "apps/ai-service/src"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-asyncio_default_fixture_loop_scope = "function"
-markers = ["llm: cần OpenAI thật (bỏ qua trong CI)"]
+# Một event loop cho cả phiên: langchain-openai cache httpx AsyncClient cấp process → loop riêng mỗi test
+# làm lời gọi sau dính "Event loop is closed" (worker thật chạy một loop nên không gặp).
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+markers = [
+    "llm: cần OpenAI thật (bỏ qua trong CI)",
+    "infra: cần Redis + Qdrant thật đang chạy (docker compose up -d redis qdrant)",
+]
 testpaths = ["packages/shared/tests", "apps/gateway/tests", "apps/ai-service/tests"]
 addopts = "--import-mode=importlib"

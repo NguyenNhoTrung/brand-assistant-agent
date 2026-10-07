@@ -2,4 +2,4 @@
 chat-fast:    { model: gpt-5.4-nano, timeout: 20, max_tokens: 800,  fallback: chat-default }
 chat-default: { model: gpt-5.4-mini, timeout: 45, max_tokens: 1500, fallback: chat-strong }
 chat-strong:  { model: gpt-5.4,      timeout: 90, max_tokens: 4000 }
-embed:        { model: text-embedding-3-small, timeout: 30 }
+embed:        { model: text-embedding-3-small, timeout: 30, dims: 1536 }
